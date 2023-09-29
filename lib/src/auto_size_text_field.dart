@@ -424,6 +424,8 @@ class AutoSizeTextField extends StatefulWidget {
 
   final double? minWidth;
 
+  final double bottomOffset;
+
   /// Creates a [AutoSizeTextField] widget.
   ///
   /// If the [style] argument is null, the text will use the style from the
@@ -486,6 +488,7 @@ class AutoSizeTextField extends StatefulWidget {
     this.scrollController,
     this.minLines,
     this.minWidth,
+    this.bottomOffset = 0,
   })  : textSpan = null,
         smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -614,7 +617,8 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
     );
   }
 
-  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(
+      BoxConstraints size, TextStyle? style, int? maxLines) {
     var span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -764,7 +768,7 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
     _textSpanWidth = math.max(_width, widget.minWidth ?? 0);
 
     if (maxLines == null) {
-      if (_height >= constraintHeight) {
+      if (_height + widget.bottomOffset >= constraintHeight) {
         return false;
       } else {
         return true;
